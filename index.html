@@ -1,364 +1,285 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
-<title>Para Esther</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para ti, bb...</title>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-body {
-  min-height: 100vh;
-  background: #090909;
-  color: #f5f5f5;
-  font-family: Georgia, serif;
-  overflow-x: hidden;
-}
+    body {
+      min-height: 100vh;
+      background: #080808;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 25px;
+    }
 
-#lockScreen {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  background: radial-gradient(ellipse at center, #191316 0%, #0b0b0b 55%, #050505 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 25px;
-}
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
 
-.simple-lock {
-  width: 100%;
-  max-width: 340px;
-  text-align: center;
-}
+    .particle {
+      position: absolute;
+      color: #b9a4ff;
+      opacity: 0.35;
+      animation: float 9s infinite ease-in-out;
+    }
 
-.simple-lock h1 {
-  color: #f5f5f5;
-  font-size: 38px;
-  font-weight: normal;
-  margin-bottom: 12px;
-}
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+        opacity: 0.15;
+      }
+      50% {
+        transform: translateY(-35px);
+        opacity: 0.6;
+      }
+    }
 
-.simple-lock p {
-  color: #929292;
-  font-family: Arial, sans-serif;
-  font-size: 13px;
-  margin-bottom: 25px;
-}
+    .container {
+      width: 100%;
+      max-width: 650px;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
 
-.simple-lock input {
-  width: 100%;
-  padding: 16px;
-  border-radius: 9px;
-  border: 1px solid #383838;
-  background: #171717;
-  color: white;
-  font-size: 15px;
-  text-align: center;
-  outline: none;
-  margin-bottom: 14px;
-}
+    .lock-screen {
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 20px;
+      padding: 40px 25px;
+    }
 
-.simple-lock input:focus {
-  border-color: #815064;
-}
+    h1 {
+      font-size: 34px;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
 
-.simple-lock button {
-  width: 100%;
-  background: #292929;
-  border: 1px solid #454545;
-  color: white;
-  border-radius: 9px;
-  padding: 15px;
-  font-size: 14px;
-  cursor: pointer;
-}
+    .subtitle {
+      color: #aaa;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
 
-.simple-lock #error {
-  color: #d98a8a;
-  margin-top: 15px;
-}
+    input {
+      width: 100%;
+      max-width: 300px;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #444;
+      background: #1b1b1b;
+      color: white;
+      text-align: center;
+      font-size: 16px;
+      outline: none;
+      margin-bottom: 15px;
+    }
 
-.particles {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 0;
-}
+    button {
+      padding: 13px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #b9a4ff;
+      color: #111;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-.particle {
-  position: absolute;
-  bottom: -30px;
-  color: #a76b7e;
-  opacity: 0;
-  animation: floatUp linear infinite;
-}
+    button:hover {
+      background: #d0c3ff;
+      transform: scale(1.03);
+    }
 
-@keyframes floatUp {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  15% { opacity: .35; }
-  85% { opacity: .25; }
-  100% {
-    transform: translateY(-110vh);
-    opacity: 0;
-  }
-}
+    .error {
+      color: #ff7777;
+      margin-top: 15px;
+      font-size: 14px;
+      display: none;
+    }
 
-.container {
-  position: relative;
-  z-index: 1;
-  width: min(100% - 36px, 680px);
-  min-height: 100vh;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 65px 0;
-}
+    .letter-screen {
+      display: none;
+      animation: appear 1.2s ease;
+    }
 
-h1 {
-  font-size: clamp(36px, 8vw, 57px);
-  font-weight: normal;
-  line-height: 1.15;
-  color: #f8e5ec;
-  margin-bottom: 17px;
-}
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-.subtitle {
-  color: #c6aab5;
-  font-size: 16px;
-  line-height: 1.8;
-  max-width: 420px;
-  margin-bottom: 36px;
-}
+    .intro {
+      color: #b9a4ff;
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+    }
 
-#openButton {
-  background: #77334d;
-  color: white;
-  border: 1px solid #a66b80;
-  padding: 15px 31px;
-  border-radius: 40px;
-  font-size: 14px;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: .3s;
-}
+    .letter-card {
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: left;
+      line-height: 1.8;
+      color: #dedede;
+      box-shadow: 0 10px 40px #0008;
+    }
 
-#openButton:hover {
-  background: #984764;
-  transform: translateY(-3px);
-}
+    .letter-card p {
+      margin-bottom: 18px;
+    }
 
-#letter {
-  display: none;
-  width: 100%;
-  text-align: left;
-  margin-top: 45px;
-  animation: appear 1.5s ease forwards;
-}
+    .signature {
+      text-align: right;
+      color: #c5b3ff;
+      margin-top: 30px;
+      font-size: 19px;
+      font-weight: bold;
+    }
 
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+    .read-button {
+      margin-top: 25px;
+    }
 
-.letter-card {
-  background: linear-gradient(145deg, #24131cdd, #160e14ee);
-  border: 1px solid #774054;
-  border-radius: 20px;
-  padding: clamp(23px, 6vw, 42px);
-  box-shadow: 0 15px 55px #00000050;
-}
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 28px;
+      }
 
-.letter-heading {
-  text-align: center;
-  color: #e5a8bc;
-  font-size: 25px;
-  font-weight: normal;
-  line-height: 1.5;
-  margin-bottom: 30px;
-}
-
-.letter-content {
-  color: #ead9df;
-  font-family: Arial, sans-serif;
-  font-size: 15px;
-  line-height: 2;
-  white-space: pre-line;
-  overflow-wrap: anywhere;
-}
-
-.signature {
-  text-align: center;
-  margin-top: 35px;
-  color: #f0b3c7;
-  font-size: 27px;
-  font-style: italic;
-  line-height: 1.5;
-  opacity: 0;
-  transition: opacity 2s ease;
-}
-
-.signature.show {
-  opacity: 1;
-}
-
-@media(max-width: 480px) {
-  .container {
-    padding: 45px 0;
-  }
-
-  .letter-content {
-    font-size: 14px;
-  }
-}
-</style>
+      .letter-card {
+        padding: 22px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div id="lockScreen">
-  <div class="simple-lock">
-    <h1>Solo lee…</h1>
-    <p>Ingresa la contraseña para continuar.</p>
-    <input type="password" id="password" placeholder="Contraseña">
-    <button onclick="unlock()">Entrar</button>
-    <p id="error"></p>
+  <div class="particles">
+    <span class="particle" style="top:12%;left:15%;">✦</span>
+    <span class="particle" style="top:25%;left:85%;">·</span>
+    <span class="particle" style="top:70%;left:12%;">✦</span>
+    <span class="particle" style="top:82%;left:80%;">·</span>
+    <span class="particle" style="top:45%;left:50%;">✦</span>
+    <span class="particle" style="top:90%;left:35%;">·</span>
   </div>
-</div>
 
-<div class="particles" id="particles"></div>
+  <main class="container">
 
-<main class="container">
+    <section class="lock-screen" id="lockScreen">
+      <h1>Solo lee…</h1>
+      <p class="subtitle">Hay algo que quisiera que leyeras.</p>
 
-  <h1>Para Esther...</h1>
+      <input
+        type="password"
+        id="password"
+        placeholder="Contraseña"
+        autocomplete="off"
+      >
 
-  <p class="subtitle">
-    Hay cosas que merecen ser aclaradas,
-    y sentimientos que merecen ser expresados.
-  </p>
+      <br>
 
-  <button id="openButton" onclick="openLetter()">
-    Leer algo para ti
-  </button>
+      <button onclick="checkPassword()">Entrar</button>
 
-  <section id="letter">
-    <div class="letter-card">
+      <p class="error" id="error">
+        Esa no es la contraseña. Inténtalo otra vez.
+      </p>
+    </section>
 
-      <h2 class="letter-heading">
-        Hay cosas que merecen ser aclaradas...
-      </h2>
+    <section class="letter-screen" id="letterScreen">
+      <p class="intro">UNAS PALABRAS PARA TI</p>
 
-      <div class="letter-content" id="message"></div>
+      <h1>Para ti, bb...</h1>
 
-      <div class="signature" id="signature">
-        Te amo mucho, bby.
-      </div>
+      <p class="subtitle">
+        Hay cosas que merecen ser aclaradas.
+      </p>
 
-    </div>
-  </section>
+      <button
+        class="read-button"
+        onclick="showLetter()"
+        id="readButton"
+      >
+        Leer algo para ti
+      </button>
 
-</main>
+      <article class="letter-card" id="letterCard" style="display:none; margin-top:25px;">
 
-<script>
+        <p>Esther, hice esto porque hay muchas cosas que quisiera decirte y a veces no sé ni cómo explicarlas.</p>
 
-function unlock() {
-  const password = document.getElementById("password").value;
+        <p>Yo sé que hemos pasado por momentos que no han sido fáciles, y sé que hay cosas que todavía te hacen sentir mal. No quiero que pienses que estoy ignorando eso, porque de verdad me importa cómo te sientes.</p>
 
-  if (password === "Amo a Yewill") {
-    document.getElementById("lockScreen").style.display = "none";
-  } else {
-    document.getElementById("error").textContent =
-      "Contraseña incorrecta. Inténtalo nuevamente.";
-  }
-}
+        <p>Tampoco quiero presionarte ni hacerte sentir que tienes que estar bien de una vez. Si necesitas tu tiempo, está bien, quiero que puedas tomártelo.</p>
 
-document.getElementById("password")
-.addEventListener("keydown", function(e) {
-  if (e.key === "Enter") unlock();
-});
+        <p>Simplemente quería recordarte lo mucho que significas para mí. De verdad, tú eres alguien demasiado especial en mi vida. No sabes cuánto te quiero y lo mucho que valoro tenerte.</p>
 
-const message = `Esther, hice esto porque hay muchas cosas que quisiera decirte y a veces no sé ni cómo explicarlas.
+        <p>Yo sé que no soy perfecto y que he cometido errores, pero también quisiera que pudieras ver todo el cariño que tengo para darte. No quiero que todo se quede en palabras bonitas, porque hay muchas cosas que quisiera demostrarte con el tiempo.</p>
 
-Yo sé que hemos pasado por momentos que no han sido fáciles, y sé que hay cosas que todavía te hacen sentir mal. No quiero que pienses que estoy ignorando eso, porque de verdad me importa cómo te sientes.
+        <p>A veces quisiera que pudieras ver lo que siento por ti desde mi lado, porque si hay algo que tengo claro es que nunca había querido tanto a alguien como te quiero a ti.</p>
 
-Tampoco quiero presionarte ni hacerte sentir que tienes que estar bien de una vez. Si necesitas tu tiempo, está bien, quiero que puedas tomártelo.
+        <p>No hice esto para que me respondas algo ni para que cambies cómo te sientes. Lo hice porque quería tener un pequeño espacio donde pudiera expresarte lo que a veces no me salen las palabras para decirte.</p>
 
-Simplemente quería recordarte lo mucho que significas para mí. De verdad, tú eres alguien demasiado especial en mi vida. No sabes cuánto te quiero y lo mucho que valoro tenerte.
+        <p>Y nada, Esther, solamente quiero que estés bien, que no te sientas presionada y que nunca olvides lo importante que eres para mí.</p>
 
-Yo sé que no soy perfecto y que he cometido errores, pero también quisiera que pudieras ver todo el cariño que tengo para darte. No quiero que todo se quede en palabras bonitas, porque hay muchas cosas que quisiera demostrarte con el tiempo.
+        <div class="signature">
+          Te amo mucho, bby.
+        </div>
 
-A veces quisiera que pudieras ver lo que siento por ti desde mi lado, porque si hay algo que tengo claro es que nunca había querido tanto a alguien como te quiero a ti.
+      </article>
+    </section>
 
-No hice esto para que me respondas algo ni para que cambies cómo te sientes. Lo hice porque quería tener un pequeño espacio donde pudiera expresarte lo que a veces no me salen las palabras para decirte.
+  </main>
 
-Y nada, Esther, solamente quiero que estés bien, que no te sientas presionada y que nunca olvides lo importante que eres para mí.`;
+  <script>
+    function checkPassword() {
+      const password = document.getElementById("password").value;
+      const error = document.getElementById("error");
 
-let index = 0;
-let started = false;
-
-function openLetter() {
-  if (started) return;
-
-  started = true;
-
-  document.getElementById("openButton").style.display = "none";
-
-  const letter = document.getElementById("letter");
-  letter.style.display = "block";
-
-  const output = document.getElementById("message");
-
-  function writeText() {
-    if (index < message.length) {
-      output.textContent += message.charAt(index);
-      index++;
-      setTimeout(writeText, 24);
-    } else {
-      document.getElementById("signature").classList.add("show");
+      if (password === "Amo a Yewill") {
+        document.getElementById("lockScreen").style.display = "none";
+        document.getElementById("letterScreen").style.display = "block";
+      } else {
+        error.style.display = "block";
+      }
     }
-  }
 
-  writeText();
-}
+    document.getElementById("password").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        checkPassword();
+      }
+    });
 
-function createParticles() {
-  const container = document.getElementById("particles");
+    function showLetter() {
+      document.getElementById("letterCard").style.display = "block";
+      document.getElementById("readButton").style.display = "none";
+    }
+  </script>
 
-  for (let i = 0; i < 22; i++) {
-    const particle = document.createElement("span");
-
-    particle.className = "particle";
-    particle.textContent = Math.random() > 0.5 ? "✦" : "·";
-    particle.style.left = Math.random() * 100 + "%";
-    particle.style.fontSize = (10 + Math.random() * 12) + "px";
-    particle.style.animationDuration = (10 + Math.random() * 12) + "s";
-    particle.style.animationDelay = (Math.random() * 12) + "s";
-
-    container.appendChild(particle);
-  }
-}
-
-createParticles();
-
-</script>
 </body>
 </html>
