@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>Para Esther</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: #090909;
+  color: #f5f5f5;
+  font-family: Georgia, serif;
+  overflow-x: hidden;
+}
+
+#lockScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: radial-gradient(ellipse at center, #191316 0%, #0b0b0b 55%, #050505 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+}
+
+.simple-lock {
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+}
+
+.simple-lock h1 {
+  color: #f5f5f5;
+  font-size: 38px;
+  font-weight: normal;
+  margin-bottom: 12px;
+}
+
+.simple-lock p {
+  color: #929292;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.simple-lock input {
+  width: 100%;
+  padding: 16px;
+  border-radius: 9px;
+  border: 1px solid #383838;
+  background: #171717;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  outline: none;
+  margin-bottom: 14px;
+}
+
+.simple-lock input:focus {
+  border-color: #815064;
+}
+
+.simple-lock button {
+  width: 100%;
+  background: #292929;
+  border: 1px solid #454545;
+  color: white;
+  border-radius: 9px;
+  padding: 15px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.simple-lock #error {
+  color: #d98a8a;
+  margin-top: 15px;
+}
+
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  bottom: -30px;
+  color: #a76b7e;
+  opacity: 0;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% { opacity: .35; }
+  85% { opacity: .25; }
+  100% {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 36px, 680px);
+  min-height: 100vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 65px 0;
+}
+
+.small-title {
+  color: #c49aa9;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  margin-bottom: 22px;
+}
+
+h1 {
+  font-size: clamp(36px, 8vw, 57px);
+  font-weight: normal;
+  line-height: 1.15;
+  color: #f8e5ec;
+  margin-bottom: 17px;
+}
+
+.subtitle {
+  color: #c6aab5;
+  font-size: 16px;
+  line-height: 1.8;
+  max-width: 420px;
+  margin-bottom: 36px;
+}
+
+#openButton {
+  background: #77334d;
+  color: white;
+  border: 1px solid #a66b80;
+  padding: 15px 31px;
+  border-radius: 40px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+#openButton:hover {
+  background: #984764;
+  transform: translateY(-3px);
+}
+
+#letter {
+  display: none;
+  width: 100%;
+  text-align: left;
+  margin-top: 45px;
+  animation: appear 1.5s ease forwards;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.letter-card {
+  background: linear-gradient(145deg, #24131cdd, #160e14ee);
+  border: 1px solid #774054;
+  border-radius: 20px;
+  padding: clamp(23px, 6vw, 42px);
+  box-shadow: 0 15px 55px #00000050;
+}
+
+.letter-heading {
+  text-align: center;
+  color: #e5a8bc;
+  font-size: 25px;
+  font-weight: normal;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.letter-content {
+  color: #ead9df;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 2;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.signature {
+  text-align: center;
+  margin-top: 35px;
+  color: #f0b3c7;
+  font-size: 27px;
+  font-style: italic;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+.signature.show {
+  opacity: 1;
+}
+
+.footer {
+  margin-top: 35px;
+  color: #9e7988;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+@media(max-width: 480px) {
+  .container {
+    padding: 45px 0;
+  }
+
+  .letter-content {
+    font-size: 14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="lockScreen">
+  <div class="simple-lock">
+    <h1>Solo lee…</h1>
+    <p>Ingresa la contraseña para continuar.</p>
+    <input type="password" id="password" placeholder="Contraseña">
+    <button onclick="unlock()">Entrar</button>
+    <p id="error"></p>
+  </div>
+</div>
+
+<div class="particles" id="particles"></div>
+
+<main class="container">
+
+  <div class="small-title">Un pequeño detalle para ti</div>
+
+  <h1>Para Esther...</h1>
+
+  <p class="subtitle">
+    Hay cosas que merecen ser aclaradas,
+    y sentimientos que merecen ser expresados.
+  </p>
+
+  <button id="openButton" onclick="openLetter()">
+    Leer algo para ti
+  </button>
+
+  <section id="letter">
+    <div class="letter-card">
+
+      <h2 class="letter-heading">
+        Hay cosas que merecen ser aclaradas...
+      </h2>
+
+      <div class="letter-content" id="message"></div>
+
+      <div class="signature" id="signature">
+        Te amo mucho, bby.
+      </div>
+
+    </div>
+  </section>
+
+  <div class="footer">
+    HECHO CON MUCHO CARIÑO
+  </div>
+
+</main>
+
+<script>
+
+function unlock() {
+  const password = document.getElementById("password").value;
+
+  if (password === "Amo a Yewill") {
+    document.getElementById("lockScreen").style.display = "none";
+  } else {
+    document.getElementById("error").textContent =
+      "Contraseña incorrecta. Inténtalo nuevamente.";
+  }
+}
+
+document.getElementById("password")
+.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") unlock();
+});
+
+const message = `Esther, hice esto porque hay muchas cosas que quisiera decirte y a veces no sé ni cómo explicarlas.
+
+Yo sé que hemos pasado por momentos que no han sido fáciles, y sé que hay cosas que todavía te hacen sentir mal. No quiero que pienses que estoy ignorando eso, porque de verdad me importa cómo te sientes.
+
+Tampoco quiero presionarte ni hacerte sentir que tienes que estar bien de una vez. Si necesitas tu tiempo, está bien, quiero que puedas tomártelo.
+
+Simplemente quería recordarte lo mucho que significas para mí. De verdad, tú eres alguien demasiado especial en mi vida. No sabes cuánto te quiero y lo mucho que valoro tenerte.
+
+Yo sé que no soy perfecto y que he cometido errores, pero también quisiera que pudieras ver todo el cariño que tengo para darte. No quiero que todo se quede en palabras bonitas, porque hay muchas cosas que quisiera demostrarte con el tiempo.
+
+A veces quisiera que pudieras ver lo que siento por ti desde mi lado, porque si hay algo que tengo claro es que nunca había querido tanto a alguien como te quiero a ti.
+
+No hice esto para que me respondas algo ni para que cambies cómo te sientes. Lo hice porque quería tener un pequeño espacio donde pudiera expresarte lo que a veces no me salen las palabras para decirte.
+
+Y nada, Esther, solamente quiero que estés bien, que no te sientas presionada y que nunca olvides lo importante que eres para mí.`;
+
+let index = 0;
+let started = false;
+
+function openLetter() {
+  if (started) return;
+
+  started = true;
+
+  document.getElementById("openButton").style.display = "none";
+
+  const letter = document.getElementById("letter");
+  letter.style.display = "block";
+
+  const output = document.getElementById("message");
+
+  function writeText() {
+    if (index < message.length) {
+      output.textContent += message.charAt(index);
+      index++;
+      setTimeout(writeText, 24);
+    } else {
+      document.getElementById("signature").classList.add("show");
+    }
+  }
+
+  writeText();
+}
+
+function createParticles() {
+  const container = document.getElementById("particles");
+
+  for (let i = 0; i < 22; i++) {
+    const particle = document.createElement("span");
+
+    particle.className = "particle";
+    particle.textContent = Math.random() > 0.5 ? "✦" : "·";
+    particle.style.left = Math.random() * 100 + "%";
+    particle.style.fontSize = (10 + Math.random() * 12) + "px";
+    particle.style.animationDuration = (10 + Math.random() * 12) + "s";
+    particle.style.animationDelay = (Math.random() * 12) + "s";
+
+    container.appendChild(particle);
+  }
+}
+
+createParticles();
+
+</script>
+</body>
+</html>
