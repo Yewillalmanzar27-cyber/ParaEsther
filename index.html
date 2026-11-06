@@ -132,11 +132,34 @@
       }
     }
 
-    .intro {
-      color: #b9a4ff;
-      font-size: 14px;
-      letter-spacing: 2px;
-      margin-bottom: 18px;
+    .animated-subtitle {
+      color: #aaa;
+      margin: 15px 0 28px;
+      line-height: 1.6;
+      animation: phraseAppear 2s ease both,
+                 softGlow 4s ease-in-out 2s infinite;
+    }
+
+    @keyframes phraseAppear {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(6px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes softGlow {
+      0%, 100% {
+        text-shadow: 0 0 0 transparent;
+      }
+      50% {
+        text-shadow: 0 0 12px rgba(185, 164, 255, 0.5);
+      }
     }
 
     .letter-card {
@@ -148,6 +171,7 @@
       line-height: 1.8;
       color: #dedede;
       box-shadow: 0 10px 40px #0008;
+      animation: appear 1.2s ease;
     }
 
     .letter-card p {
@@ -163,7 +187,7 @@
     }
 
     .read-button {
-      margin-top: 25px;
+      margin-top: 10px;
     }
 
     @media (max-width: 480px) {
@@ -213,11 +237,10 @@
     </section>
 
     <section class="letter-screen" id="letterScreen">
-      <p class="intro">UNAS PALABRAS PARA TI</p>
 
       <h1>Para ti, bb...</h1>
 
-      <p class="subtitle">
+      <p class="animated-subtitle">
         Hay cosas que merecen ser aclaradas.
       </p>
 
@@ -229,7 +252,11 @@
         Leer algo para ti
       </button>
 
-      <article class="letter-card" id="letterCard" style="display:none; margin-top:25px;">
+      <article
+        class="letter-card"
+        id="letterCard"
+        style="display:none; margin-top:25px;"
+      >
 
         <p>Esther, hice esto porque hay muchas cosas que quisiera decirte y a veces no sé ni cómo explicarlas.</p>
 
